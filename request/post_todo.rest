@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/todos
+Content-Type: Application/json
+
+{
+  "text": "Buy milk",
+  "description": "Because i'm running out",
+}
