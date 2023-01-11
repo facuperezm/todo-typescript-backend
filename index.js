@@ -54,29 +54,19 @@ app.get("/api/todos/:id", (request, response) => {
     });
 });
 
-app.delete("/api/todos/:id", (request, response) => {
-  const id = Number(request.params.id);
-  todos = todos.filter((todo) => todo.id !== id);
-  response.status(204).end();
-});
-
-// app.post("/api/todos", (request, response) => {
-//   const body = request.body;
-//   console.log(body, "body");
-
-//   if (body.content === undefined) {
-//     return response.status(400).json({ error: "content missing" });
-//   }
-
-//   const TodoInstance = new TodoModel({
-//     text: body.content,
-//     description: body.description,
-//   });
-
-//   TodoInstance.save().then((savedTodo) => {
-//     response.json(savedTodo);
-//   });
+// app.delete("/api/todos/:id", (request, response) => {
+//   const id = Number(request.params.id);
+//   const todos = todos.filter((todo) => todo.id !== id);
+//   response.status(204).end();
 // });
+
+app.delete("/api/todos/:id", (request, response, next) => {
+  TodoModel.findByIdAndRemove(request.params.id)
+    .then(() => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
+});
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
