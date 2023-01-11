@@ -26,7 +26,6 @@ app.post("/api/todos", (request, response, next) => {
 
   const todoInstance = new TodoModel({
     text: body.content,
-    description: body.description,
   });
 
   todoInstance
@@ -53,12 +52,6 @@ app.get("/api/todos/:id", (request, response) => {
       response.status(500).end();
     });
 });
-
-// app.delete("/api/todos/:id", (request, response) => {
-//   const id = Number(request.params.id);
-//   const todos = todos.filter((todo) => todo.id !== id);
-//   response.status(204).end();
-// });
 
 app.delete("/api/todos/:id", (request, response, next) => {
   TodoModel.findByIdAndRemove(request.params.id)
