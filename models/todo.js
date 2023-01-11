@@ -13,6 +13,7 @@ mongoose
 
 const todoSchema = new mongoose.Schema({
   text: String,
+  done: Boolean,
 });
 
 todoSchema.set("toJSON", {

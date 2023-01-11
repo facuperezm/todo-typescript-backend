@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/todos/63beba0ecdf881168d302931
+Content-Type: application/json
+
+{
+    "text": "Do my homework",
+    "done": false
+}

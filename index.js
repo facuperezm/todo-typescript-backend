@@ -26,13 +26,13 @@ app.post("/api/todos", (request, response, next) => {
   console.log(body, "body");
   const todoInstance = new TodoModel({
     text: body.text,
-    text: body.text,
+    done: body.done || false,
   });
 
   todoInstance
     .save()
     .then((savedTodos) => {
-      response.json(savedTodos);
+      response.json({ savedTodos });
     })
     .catch((error) => next(error));
 });
@@ -52,6 +52,21 @@ app.get("/api/todos/:id", (request, response) => {
       console.log(error);
       response.status(500).end();
     });
+});
+
+app.put("/api/todos/:id", (request, response, next) => {
+  const body = request.body;
+
+  const note = {
+    text: body.text,
+    done: body.done,
+  };
+
+  TodoModel.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then((updatedTodo) => {
+      response.json(updatedTodo);
+    })
+    .catch((error) => next(error));
 });
 
 app.delete("/api/todos/:id", (request, response, next) => {
