@@ -1,12 +1,8 @@
-require("dotenv").config();
-const Todo = require("./models/todo");
 const express = require("express");
-const cors = require("cors");
 const app = express();
-
-app.use(express.static("build"));
-app.use(cors());
-app.use(express.json());
+const cors = require("cors");
+require("dotenv").config();
+const TodoModel = require("./models/todo");
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
@@ -16,20 +12,39 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+app.use(express.json());
 app.use(requestLogger);
+app.use(cors());
+app.use(express.static("build"));
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("<h1>Hello World!</h1>");
+});
+
+app.post("/api/todos", (request, response, next) => {
+  const body = request.body;
+
+  const todoInstance = new TodoModel({
+    text: body.content,
+    description: body.description,
+  });
+
+  todoInstance
+    .save()
+    .then((savedTodos) => {
+      response.json(savedTodos);
+    })
+    .catch((error) => next(error));
 });
 
 app.get("/api/todos", (request, response) => {
-  Todo.find({}).then((todos) => {
+  TodoModel.find({}).then((todos) => {
     response.json(todos);
   });
 });
 
 app.get("/api/todos/:id", (request, response) => {
-  Todo.findById(request.params.id)
+  TodoModel.findById(request.params.id)
     .then((todo) => {
       response.json(todo);
     })
@@ -45,23 +60,23 @@ app.delete("/api/todos/:id", (request, response) => {
   response.status(204).end();
 });
 
-app.post("/api/todos", (request, response) => {
-  const body = request.body;
+// app.post("/api/todos", (request, response) => {
+//   const body = request.body;
+//   console.log(body, "body");
 
-  if (body.content === undefined) {
-    return response.status(400).json({ error: "content missing" });
-  }
+//   if (body.content === undefined) {
+//     return response.status(400).json({ error: "content missing" });
+//   }
 
-  const Todo = new Todo({
-    text: body.content,
-    description: body.description,
-    done: false,
-  });
+//   const TodoInstance = new TodoModel({
+//     text: body.content,
+//     description: body.description,
+//   });
 
-  Todo.save().then((savedTodo) => {
-    response.json(savedTodo);
-  });
-});
+//   TodoInstance.save().then((savedTodo) => {
+//     response.json(savedTodo);
+//   });
+// });
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

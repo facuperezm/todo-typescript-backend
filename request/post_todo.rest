@@ -1,7 +1,13 @@
-POST http://localhost:3001/api/todos
-Content-Type: Application/json
+POST http://localhost:3001/api/todos 
+Content-Type: application/json 
 
-{
-  "text": "Buy milk",
-  "description": "Because i'm running out",
-}
+[
+  {
+    "text": "My new todo",
+    "description": "this is the description"
+  },
+  {
+    "text": "My new todo",
+    "description": "this is the description"
+  }
+]
