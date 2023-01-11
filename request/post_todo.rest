@@ -3,5 +3,5 @@ Content-Type: application/json
 
   {
     "text": "My new todo this is the second",
-    "description": "this is the description"
+    "complasdfeted": false
   }

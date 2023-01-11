@@ -23,9 +23,10 @@ app.get("/", (req, res) => {
 
 app.post("/api/todos", (request, response, next) => {
   const body = request.body;
-
+  console.log(body, "body");
   const todoInstance = new TodoModel({
-    text: body.content,
+    text: body.text,
+    text: body.text,
   });
 
   todoInstance
